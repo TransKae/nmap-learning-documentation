@@ -1,8 +1,24 @@
 OVERVIEW:
 This file will serve as a personal cheatsheet for the tool 'nmap' for future reference for myself.
-Most of the information in this document will come directly from the nmap reference guide - summarized in my own words.
+Most of the information in this document will come directly from the nmap reference guide - summarized in my own words with the information relevent to me.
 
 WHAT IS NMAP?
 Nmap is a diverse network discovery tool, most commonly used by red and blue teams in order to enumerate a network.
 It has a very large number parameters that can be added to discover different information about systems and edit the speed to balance time taken with the risk of being detected by network systems such as an IDS.
 the template for an nmap command is 'nmap [ <Scan Type> ...] [ <Options> ] { <target specification> }'
+
+TARGET SPECIFICATION:
+Nmap works with hostnames, IPv4, and IPv6 addressing, however the capabilities between these are slightly different.
+With nmap, you can specify hostnames and nmap will resolve the IP address via DNS.
+With IPv4 and IPv6 you can also specify /numbits to the end of an IP address and it will scan all devices with an IP address matching the same numbits specified ( for example: 192.168.3.0/24 specifies that the scan will target any device with an IPv4 address where the first 24 bits match the given IP address - which in this case would be any device with an IP 192.168.3.0-255 ).
+With IPv4 addressing: there is 32 bits so you can specify anywhere from /0 (which would scan the whole internet) to /32 (which would scan a specific device). For IPv6 addressing: it is between /0 and /128.
+IPv4 also allows the user to specify a range and use commas for easy targetting of both adjacent and non-adjacent IPv4 addresses. ( This could work like 192.168.3.1-5,8 which would scan 192.168.3.1 - 192.168.3.5 and 192.168.3.8.
+This can be useful when you want to omit certain IP address ends such as .255 to avoid broadcast IPv4 addresses. This format is unsupported on IPv6.
+
+Nmap also supports the following parameters for specifying targets:
+-iL <filename> : specifies a file which nmap can read from and target all hosts listed in the file.
+-iR <num> : randomly targets hosts on the internet while avoiding certain private, multicast, or unallocated address ranges, <num> specifies the number of hosts to be sampled - 0 starts a never-ending scan.
+--exclude <host1>,<host2>,<...> : excludes the listed IP addresses from scanning, even if they were in the specified range of IP addresses. 
+--excludefile <filename> : excludes all hosts listed in the file from scanning.
+-n : stops nmap from doing reverse DNS resolutions on targets it finds. Useful as DNS lookups can be extremely slow.
+-R : forces nmap to do reverse DNS resolution on target IP addresses. Only performed on active hosts if this or -n are not specified.
