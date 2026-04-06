@@ -1,0 +1,8 @@
+OVERVIEW:
+This file will serve as a personal cheatsheet for the tool 'nmap' for future reference for myself.
+Most of the information in this document will come directly from the nmap reference guide - summarized in my own words.
+
+WHAT IS NMAP?
+Nmap is a diverse network discovery tool, most commonly used by red and blue teams in order to enumerate a network.
+It has a very large number parameters that can be added to discover different information about systems and edit the speed to balance time taken with the risk of being detected by network systems such as an IDS.
+the template for an nmap command is 'nmap [ <Scan Type> ...] [ <Options> ] { <target specification> }'
