@@ -22,3 +22,17 @@ Nmap also supports the following parameters for specifying targets:
 --excludefile <filename> : excludes all hosts listed in the file from scanning.
 -n : stops nmap from doing reverse DNS resolutions on targets it finds. Useful as DNS lookups can be extremely slow.
 -R : forces nmap to do reverse DNS resolution on target IP addresses. Only performed on active hosts if this or -n are not specified.
+
+HOST DISCOVERY:
+The hosts that you wish to enumerate on nmap can vary greatly depending on the reason for the scan and what the professional doing it wishes to find. 
+Nmap has a variety of host discovery options which enable the professional to only enumerate what they want, if given a range without any options, nmap will send out requests to all IPs within that range and then only run reconnaissance on the IPs it receives responses from, this cuts down enumeration time massively as an organisation could want to perform a scan on the IP range 10.0.0.0/8 which is over 16 million IP addresses but they may only have a couple thousand devices within that range.
+
+If no host discovery options are given, the following pings are sent to each IP by nmap: ICMP echo, TCP SYN on :443, TCP ACK on :80, and an ICMP timestamp request. The defaults are equivalent to -PE -PS443 -PA80 -PP options. 
+Exceptions to this are ARP (IPv4) and Neighbour Discovery [ND] (IPv6) scans which are used for local ethernet connected targets. unprivileged Unix users will only be able to send SYN packets to ports 80 and 443 via a 'connect' call which is not sufficient for security auditing. 
+-P* options can be combined for to increase the odds of penetrating strict firewalls by sending many different probe types. Also, ARP and ND are done by default on local ethernet networks even when other -P* options are specified as it is much faster and effective.
+Nmap defaults to doing host discovery and then scanning the ports of devices that it deems are online - true even if non-default discovery types are chosen such as UDP probes. -Pn can be used to skip host discovery and port scan all specified devices.
+
+Nmap supports the following parameters for specifying discovery options:
+-sL : List scan simply lists each host of the specified network without sending packets to the targets. Good for ensuring you are about to scan the correct network, host names can also be very valuable information for us.
+-sn : This option prevents nmap from performing port scans on the devices it discovers. It allows light recon on the target network but can also be used to run NSE scripts or traceroute.
+-Pn : This skips host discovery completely meaning nmap will conduct full port scans against all addresses within the specified range which will massively slow down the speed of enumeration.
